@@ -1,0 +1,16 @@
+{
+  "name": "serverless-multi-api",
+  "version": "1.0.0",
+  "description": "Multiple Serverless services on Amazon API Gateway",
+  "main": "src/handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patryk Dworznik <patryk@dworznik.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless": "^1.36.1",
+    "serverless-domain-manager": "^2.6.11",
+    "serverless-plugin-bind-deployment-id": "^1.0.2"
+  }
+}

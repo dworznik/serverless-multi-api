@@ -1,0 +1,2 @@
+name: api.example.org
+cert: arn:aws:acm:${AWS::Region}:${AWS::AccountId}:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx

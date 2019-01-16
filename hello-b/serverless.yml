@@ -1,0 +1,57 @@
+service: hello-b
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${self:custom.stage-name}
+  region: us-east-1
+
+plugins:
+  - serverless-plugin-bind-deployment-id
+  - serverless-domain-manager
+
+custom:
+  stage-name: dev
+  domain: ${file(../domain.yml)}
+  customDomain:
+    domainName: ${self:custom.domain.name}
+    certificateArn: ${self:custom.domain.cert}
+    basePath: "b"
+
+functions:
+  hello:
+    handler:  src/handler.helloB
+
+    events:
+      - http:
+         path: hello
+         method: get
+         integration: lambda
+
+
+resources:
+  Resources:
+    ApiGatewayStage:
+      Type: AWS::ApiGateway::Stage
+      Properties:
+        DeploymentId:
+          Ref: __deployment__
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        StageName: ${self:custom.stage-name}
+        MethodSettings:
+          - DataTraceEnabled: true
+            HttpMethod: "*"
+            LoggingLevel: INFO
+            CachingEnabled: false
+            ResourcePath: "/*"
+            MetricsEnabled: true
+          - DataTraceEnabled: true
+            HttpMethod: "GET"
+            LoggingLevel: INFO
+            CachingEnabled: true
+            CacheTtlInSeconds: 60
+            ResourcePath: "/*"
+            MetricsEnabled: true
+        CacheClusterEnabled: true
+        CacheClusterSize: '0.5'

@@ -1,0 +1,20 @@
+service: multi-api
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${self:custom.stage-name}
+  region: us-east-1
+
+
+custom:
+  stage-name: dev
+  domain: ${file(./domain.yml)}
+
+resources:
+  Resources:
+    ApiDomain:
+      Type: AWS::ApiGateway::DomainName
+      Properties:
+        CertificateArn: ${self:custom.domain.cert}
+        DomainName: ${self:custom.domain.name}
